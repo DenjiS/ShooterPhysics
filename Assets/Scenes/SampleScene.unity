@@ -635,6 +635,8 @@ GameObject:
   - component: {fileID: 924729766}
   - component: {fileID: 924729765}
   - component: {fileID: 924729767}
+  - component: {fileID: 924729768}
+  - component: {fileID: 924729769}
   m_Layer: 0
   m_Name: Player - CC
   m_TagString: Untagged
@@ -697,14 +699,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cameraTransform: {fileID: 330585546}
-  _speed: 6
-  _strafeSpeed: 5
-  _jumpSpeed: 7
-  _gravityFactor: 1.5
+--- !u!114 &924729768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924729764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7885cb8030ac1bb4099700c6ad3d6f6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _horizontalTurnSensitivity: 10
   _verticalTurnSensitivity: 10
-  _verticalMinAngle: -89
-  _verticalMaxAngle: 89
+  _verticalMinAngle: -85
+  _verticalMaxAngle: 85
+--- !u!114 &924729769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924729764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58fb115399a83b34d834a742d04a9272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 6
+  _strafeSpeed: 4
+  _jumpSpeed: 7
+  _gravityFactor: 2
 --- !u!43 &1253966298
 Mesh:
   m_ObjectHideFlags: 0
