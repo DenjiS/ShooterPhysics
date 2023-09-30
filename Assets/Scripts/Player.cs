@@ -3,8 +3,22 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private Transform _cameraTransform;
+    [SerializeField] private Weapon _weapon;
+
+    private Transform _transform;
 
     public Transform CameraTransform => _cameraTransform;
+
+    private void Awake()
+    {
+        _weapon.Initialize(GetComponent<CharacterController>());
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+            _weapon.Shoot(_cameraTransform.position, _cameraTransform.forward);
+    }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
