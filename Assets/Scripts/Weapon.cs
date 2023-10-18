@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Weapon : MonoBehaviour
 {
@@ -9,10 +10,21 @@ public class Weapon : MonoBehaviour
 
     [Header("Sphere Cast options")]
     [SerializeField] private float _sphereRadius;
+    [SerializeField] private float _impactForce;
 
     [Header("Projectile Shooting options")]
     [SerializeField] private Projectile _bulletPrefab;
     [SerializeField] private float _velocity;
+
+    [Header("Decal")]
+    [SerializeField] private Transform _decal;
+    [SerializeField] private float _decalOffset;
+
+    [Header("Effect")]
+    [SerializeField] private ShootEffect _effect;
+    [SerializeField] private CameraShake _shake;
+
+    [SerializeField] private WaterSplasher _splasher;
 
     Collider _playerCollider;
     private Vector3 _startPoint;
@@ -41,6 +53,8 @@ public class Weapon : MonoBehaviour
 
         RaycastShoot(startPoint, direction);
         //ProjectileShoot(startPoint, direction * _velocity);
+
+        _effect.Perform();
     }
 
     private void ProjectileShoot(Vector3 startPoint, Vector3 velocity)
@@ -53,17 +67,33 @@ public class Weapon : MonoBehaviour
 
     private void RaycastShoot(Vector3 startPoint, Vector3 direction)
     {
+        _shake.MakeRecoil();
+
         //Line
         //if (Physics.Raycast(startPoint, direction, out RaycastHit hitInfo, _maxDistance, _layerMask, QueryTriggerInteraction.Ignore))
 
         //Sphere
         if (Physics.SphereCast(startPoint, _sphereRadius, direction, out RaycastHit hitInfo, _maxDistance, _layerMask, QueryTriggerInteraction.Ignore))
         {
+            _splasher.TryCreateWaterSplash(startPoint, hitInfo.point);
+
+            Transform decal = Instantiate(_decal, hitInfo.transform);
+            decal.position = hitInfo.point + hitInfo.normal * _decalOffset;
+            decal.LookAt(hitInfo.point);
+            decal.Rotate(Vector3.up, 180, Space.Self);
+
             BaseHealth health = hitInfo.collider.GetComponentInParent<BaseHealth>();
 
             if (health != null)
             {
                 health.TakeDamage(_damage);
+            }
+
+            Rigidbody victimBody = hitInfo.rigidbody;
+
+            if (victimBody != null)
+            {
+                victimBody.AddForceAtPosition(direction * _impactForce, hitInfo.point, ForceMode.Force);
             }
         }
     }
